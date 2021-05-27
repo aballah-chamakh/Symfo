@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container" style="margin-top:100px ;">
+    <h1>Create Commande</h1> 
+    <div  class="jouet-create-form-container">
+
+               {{form_start(formCommande)}}
+            <div class="form-group">
+                <label >Client</label>
+                {{form_widget(formCommande.code_clt_cde)}}
+            </div>
+            <div class="form-group">
+                <label >Date</label>
+                {{form_widget(formCommande.date_cde)}}
+            </div>
+            <br/>
+            <div class="form-group">
+                <label>Heure</label>
+                {{form_widget(formCommande.heure_cde)}}
+            </div>
+            <br/>
+            <div class="form-group">
+                <label>Remise</label>
+                {{form_widget(formCommande.remise_cde,{attr:{max:100,min:0}})}}
+            </div>
+             <br/>
+            <div class="form-group">
+                <label>Montant</label>
+                {{form_widget(formCommande.mnt_cde,{type:"number",step:"0.01",attr:{min:0}})}}
+            </div>
+            <br/>
+            <label>Lignes</label>
+            <div class="col-sm-12 " id="exp_list" data-prototype="{{ form_widget(formCommande.lignes.vars.prototype)|e('html_attr') }}">
+                {% for row in formCommande.lignes %}
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <strong>{{ row.vars.value.title  }} </strong>
+                        </div>
+                        <div class="panel-body">
+    
+                            {{form_row(row)}}
+                      
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <br/>
+
+            {{form_end(formCommande)}}
+           
+    </div>
+    
+</div>
+{% endblock %}
+{% block javascripts_post_body %}
+        <script src="/js/ligne_cde_nested_form.js"></script>
+{% endblock %}

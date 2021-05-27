@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container" style="margin-top:100px ;">
+    <div  class="jouet-edit-form-container">
+            {{form_start(formJouet)}}
+            <div class="form-group">
+                <label >Fournisseur</label>
+                {{form_widget(formJouet.code_four_jouet)}}
+            </div>
+            <br/>
+            <div class="form-group">
+                <label>des jouet</label>
+                {{form_widget(formJouet.des_jouet)}}
+            </div>
+            <br/>
+            <div class="form-group">
+                <label>Qte stock jouet</label>
+                {{form_widget(formJouet.qte_stock_jouet)}}
+            </div>
+             <br/>
+            <div class="form-group">
+                <label>pu jouet</label>
+                {{form_widget(formJouet.pu_jouet)}}
+            </div>
+            <br/>
+            <button type="submit" class="btn btn-primary" style="width:100%;" >edit</button>
+            {{form_end(formJouet)}}
+           
+    </div>
+    
+</div>
+{% endblock %}
