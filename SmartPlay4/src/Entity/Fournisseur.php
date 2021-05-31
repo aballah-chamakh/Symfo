@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Entity;
-
+use App\Entity\Jouet ;
 use App\Repository\FournisseurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,6 +40,21 @@ class Fournisseur
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $tel_four;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Jouet::class, mappedBy="fournisseur")
+     */
+    private $code_jouet;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Jouet", mappedBy="code_four_jouet", cascade={"persist"})
+     */
+    private $jouet;
+
+    public function __construct()
+    {
+        $this->code_jouet = new ArrayCollection();
+    }
 
 /*
     public function getId(): ?int
@@ -90,6 +107,36 @@ class Fournisseur
     public function setTelFour(?string $tel_four): self
     {
         $this->tel_four = $tel_four;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Jouet[]
+     */
+    public function getCodeJouet(): Collection
+    {
+        return $this->code_jouet;
+    }
+
+    public function addCodeJouet(Jouet $codeJouet): self
+    {
+        if (!$this->code_jouet->contains($codeJouet)) {
+            $this->code_jouet[] = $codeJouet;
+            $codeJouet->setFournisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCodeJouet(Jouet $codeJouet): self
+    {
+        if ($this->code_jouet->removeElement($codeJouet)) {
+            // set the owning side to null (unless already changed)
+            if ($codeJouet->getFournisseur() === $this) {
+                $codeJouet->setFournisseur(null);
+            }
+        }
 
         return $this;
     }

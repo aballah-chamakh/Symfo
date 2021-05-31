@@ -68,6 +68,7 @@ class Tp3Controller extends AbstractController
                 }
             }
                 $query = $four_repo->createQueryBuilder('f')
+                            ->select("f.des_four,j.des_jouet,j.qte_stock_jouet,j.PU_jouet")
                             ->innerJoin("f.jouet","j")
                             ->getQuery()
                             ->getArrayResult() ;
@@ -131,7 +132,7 @@ class Tp3Controller extends AbstractController
                         $max_four = $four ;
                     }
                 }
-                return $this->json(["state"=>true,"data"=>$max_four]);                
+                return $this->json(["state"=>true,"data"=>array($max_four)]);                
                 
                 break;
             case 5:
@@ -195,6 +196,7 @@ class Tp3Controller extends AbstractController
                             ->execute();
                 $em->flush() ;
                 $query = $four_repo->createQueryBuilder('f')
+                                    ->select("f.des_four,j.des_jouet,j.qte_stock_jouet,j.PU_jouet")
                                     ->innerJoin("f.jouet","j")
                                     ->getQuery()
                                     ->getArrayResult() ;

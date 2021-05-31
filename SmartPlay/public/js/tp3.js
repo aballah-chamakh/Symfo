@@ -1,44 +1,41 @@
 
 
 const tp3_table = $("#accordion") ;
-function sleep(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-  }
-if(tp3_table){
-    tp3_table.on('click',e=>{
+
+    $(document).on('click',e=>{
         if(e.target.className === 'btn btn-link'){
             let target = e.target.getAttribute("data-target") ;
             let targetChild = $(target)[0].firstElementChild ;
-           
-            let target_id = target.split('_')[1] ;
-            console.log($("#loader_"+target_id));
-            
+            let target_id = parseInt(target.split('_')[1]) ;
+
+            console.log("target_id : "+target_id);
             if($("#loader_"+target_id).length > 0){
-                console.log("here")
-                $("#loader_"+target_id).remove();
-                console.log("any");
-                $(targetChild).append("<h1 id='any'>Hello world</h1>") ;
-            }else if($("#any").length == 0){
-                console.log("any");
-                $(targetChild).append("<h1 id='any'>Hello world</h1>") ;
-                //$("#loader_"+target_id).parent().append("<h1>Hello world</h1>") ;
-            }
-            
-           // let loader = $('loa')
-            let nb = 7 ; 
-            console.log(nb)
-            fetch("/tp3/answer_question/?question_nb="+nb,{
+            fetch("/tp3/answer_question/?question_nb="+target_id,{
                 method : "GET" ,
             }).then(res=>{
                 res.json().then((data) => {
                     console.log(data) ;
+                    $("#loader_"+target_id).remove();
+
+                    let keys = Object.keys(data.data[0]) ;
+                    let tabel = "<table class='table table-dark'><thead><tr>"
+                    keys.map(key=>{
+                        tabel += "<th scope='col'>"+key+"</th>"
+                    })
+                    tabel += "</tr></thead><tbody><tr>"
+                    data.data.map(data_x =>{
+                        tabel += "<tr>"
+                        keys.map(key=>{
+                            tabel += "<td>"+data_x[key]+"</td>"
+                        })
+                        tabel += "</tr>"
+                    })  
+                    tabel += "</tbody></table>"
+
+                    $(targetChild).append(tabel) ;
                 });
-            })      
+            })
+        }      
         }
 
     })
-}
